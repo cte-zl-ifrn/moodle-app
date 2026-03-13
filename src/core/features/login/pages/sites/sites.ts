@@ -1,18 +1,5 @@
-// (C) Copyright 2015 Moodle Pty Ltd.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { CoreSiteBasicInfo, CoreSites } from '@services/sites';
 import { CoreAccountsList, CoreLoginHelper } from '@features/login/services/login-helper';
 import { CoreNavigator } from '@services/navigator';
@@ -22,9 +9,7 @@ import { CoreAlerts } from '@services/overlays/alerts';
 import { Translate } from '@singletons';
 import { CoreSharedModule } from '@/core/shared.module';
 
-/**
- * Page that displays the list of sites stored in the device.
- */
+// CAMINHO CORRIGIDO ABAIXO:
 @Component({
     selector: 'page-core-login-sites',
     templateUrl: 'sites.html',
@@ -43,9 +28,11 @@ export default class CoreLoginSitesPage implements OnInit {
     showDelete = false;
     loaded = false;
 
-    /**
-     * @inheritdoc
-     */
+    constructor(
+        protected router: Router,
+        protected zone: NgZone
+    ) {}
+
     async ngOnInit(): Promise<void> {
         if (CoreNavigator.getRouteBooleanParam('openAddSite')) {
             this.add();
@@ -59,63 +46,61 @@ export default class CoreLoginSitesPage implements OnInit {
         }
     }
 
-    /**
-     * Go to the page to add a site.
-     */
+    // Função que estava faltando e causando o erro no HTML e no ngOnInit
     add(): void {
-        CoreLoginHelper.goToAddSite(false, true);
+        CoreLoginHelper.goToAddSite();
     }
 
-    /**
-     * Delete a site.
-     *
-     * @param event Click event.
-     * @param site Site to delete.
-     * @returns Promise resolved when done.
-     */
+async logoutCustom() {
+    try {
+        console.log('Botão SAIR clicado!');
+
+        // 1. Limpa o token do site atual (CoreSites já está no seu topo e funciona)
+        await CoreSites.logout();
+
+        // 2. Avisa ao Angular para atualizar a tela e navegar
+        this.zone.run(async () => {
+            console.log('Redirecionando...');
+            await CoreNavigator.navigate('/login/site', {
+                reset: true,
+                animated: true
+            });
+        });
+
+    } catch (error) {
+        console.error('Erro na ação de sair:', error);
+        // Fallback: se o navegador travar, force a URL manualmente
+        window.location.hash = '/login/site';
+    }
+}
     async deleteSite(event: Event, site: CoreSiteBasicInfo): Promise<void> {
         event.stopPropagation();
-
         let siteName = site.siteName || '';
-
         siteName = await CoreFilter.formatText(siteName, { clean: true, singleLine: true, filter: false }, [], site.id);
 
         try {
             await CoreAlerts.confirmDelete(Translate.instant('core.login.confirmdeletesite', { sitename: siteName }));
         } catch {
-            // User cancelled, stop.
             return;
         }
 
         try {
             await CoreLoginHelper.deleteAccountFromList(this.accountsList, site);
-
             this.showDelete = false;
-
-            // If there are no sites left, go to add site.
             if (this.accountsList.count == 0) {
-                CoreLoginHelper.goToAddSite(true, true);
+                this.add();
             }
         } catch (error) {
             CoreAlerts.showError(error, { default: Translate.instant('core.login.errordeletesite') });
         }
     }
 
-    /**
-     * Login in a site.
-     *
-     * @param site The site.
-     * @returns Promise resolved when done.
-     */
     async login(site: CoreSiteBasicInfo): Promise<void> {
         const modal = await CoreLoadings.show();
-
         try {
             const loggedIn = await CoreSites.loadSite(site.id);
-
             if (loggedIn) {
                 await CoreNavigator.navigateToSiteHome();
-
                 return;
             }
         } catch (error) {
@@ -125,18 +110,11 @@ export default class CoreLoginSitesPage implements OnInit {
         }
     }
 
-    /**
-     * Toggle delete.
-     */
     toggleDelete(): void {
         this.showDelete = !this.showDelete;
     }
 
-    /**
-     * Open settings page.
-     */
     openSettings(): void {
         CoreNavigator.navigate('/settings');
     }
-
 }

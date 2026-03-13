@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Component, OnInit, ElementRef, inject, viewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, inject, viewChild, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 
 import { CoreNetwork } from '@services/network';
@@ -65,6 +65,62 @@ export default class CoreLoginSitePage implements OnInit {
 
     readonly formElement = viewChild<ElementRef>('siteFormEl');
 
+    // CONSTRUCTOR CORRIGIDO
+   constructor(
+    protected zone: NgZone
+) {}
+
+    // SUA FUNÇÃO NOVA (LOGOUT)
+async logoutCustom() {
+    try {
+        console.log('Botão SAIR acionado...');
+
+        // 1. Comando oficial do Moodle para encerrar sessões internas
+        await CoreSites.logout();
+
+        // 2. Limpeza manual do LocalStorage para garantir que o 'token-de-teste-jwt' suma
+        localStorage.removeItem('core_login_token');
+
+        // OPCIONAL: Limpa tudo se quiser garantir que não sobre nenhum rastro
+        // localStorage.clear();
+
+        console.log('Token removido com sucesso.');
+
+        // 3. Redirecionamento forçado usando o NgZone para evitar que a tela "trave"
+        this.zone.run(async () => {
+            console.log('Navegando para a tela de login...');
+            await CoreNavigator.navigate('/login/site', {
+                reset: true,
+                animated: true
+            });
+        });
+
+    } catch (error) {
+        // Fallback: Se o CoreSites ou o Navigator falharem, forçamos via JavaScript puro
+        console.error('Erro no logout formal, aplicando reset forçado:', error);
+
+        localStorage.removeItem('core_login_token');
+
+        // Força o navegador a ir para a URL de login e recarregar do zero
+        window.location.hash = '/login/site';
+        window.location.reload();
+    }
+}
+async ionViewWillEnter() {
+    const token = localStorage.getItem('core_login_token');
+
+    // Se não houver token ou se for o token de teste que queremos derrubar
+    if (!token || token === 'token-de-teste-jwt') {
+        console.log('Acesso negado: Sem token válido. Redirecionando...');
+
+        this.zone.run(async () => {
+            await CoreNavigator.navigate('/login/site', {
+                reset: true,
+                animated: false
+            });
+        });
+    }
+}
     siteForm!: FormGroup;
     fixedSites?: CoreLoginSiteInfoExtended[];
     filteredSites?: CoreLoginSiteInfoExtended[];

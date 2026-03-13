@@ -11,7 +11,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
+import { Component, OnInit, OnDestroy, NgZone } from '@angular/core'; // Adicione NgZone aqui
+import { Router } from '@angular/router'; // Adicione Router aqui
+// ... outros imports que já existem no arquivo ...
 import { Inject, Injectable, InjectionToken, Optional } from '@angular/core';
 import { Md5 } from 'ts-md5/dist/md5';
 import { timeout } from 'rxjs/operators';

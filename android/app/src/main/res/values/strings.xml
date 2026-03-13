@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Moodle App IFRN</string>
+    <string name="title_activity_main">Moodle App IFRN</string>
+    <string name="package_name">br.edu.ifrn.ava</string>
+    <string name="custom_url_scheme">br.edu.ifrn.ava</string>
+</resources>

@@ -1,0 +1,85 @@
+.gray-background {
+  --background: #f1f1f1; // Fundo levemente cinza do gov.br
+}
+
+.login-card {
+  background: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.gov-logo {
+  height: 32px; /* Altura padrão da barra do governo */
+  width: auto;  /* Mantém a proporção original da largura */
+  display: block;
+  margin-bottom: 15px;
+}
+
+.form-title {
+  color: #333;
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-bottom: 25px;
+}
+
+.custom-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.custom-input {
+  --border-radius: 8px;
+  --padding-start: 10px;
+  --background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.btn-continuar {
+  --background: #2f55a4; // Azul padrão gov.br
+  --border-radius: 50px; // Botão arredondado
+  --box-shadow: none;
+  font-weight: bold;
+  text-transform: none;
+  height: 45px;
+}
+
+.links-container {
+  p {
+    font-size: 0.9rem;
+    color: #2f55a4;
+    cursor: pointer;
+  }
+  .terms-link {
+    text-decoration: underline;
+    margin-top: 15px;
+  }
+}
+.gov-access-bar {
+  padding: 5px 10px;
+  color: #2f55a4;
+  ion-icon {
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+}
+
+.logo-container {
+  padding: 10px 0;
+  .gov-logo {
+    height: 35px; // Tamanho proporcional à imagem enviada
+    width: auto;
+  }
+}
+
+.help-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #2f55a4;
+  font-size: 0.95rem;
+}

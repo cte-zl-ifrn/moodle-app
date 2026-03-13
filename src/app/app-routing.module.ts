@@ -35,9 +35,21 @@ const modulesRoutes: WeakMap<InjectionToken<unknown>, ModuleRoutes> = new WeakMa
  * @returns App routes.
  */
 function buildAppRoutes(injector: Injector): Routes {
-    return injector.get<Routes[]>(APP_ROUTES, []).flat();
-}
+    const injectedRoutes = injector.get<Routes[]>(APP_ROUTES, []).flat();
 
+    return [
+        {
+            path: 'login-custom',
+            loadComponent: () => import('./core/features/login-custom/login-custom.page').then(m => m.LoginCustomPage),
+        },
+        {
+            path: '',
+            redirectTo: 'login-custom',
+            pathMatch: 'full'
+        },
+        ...injectedRoutes
+    ];
+}
 /**
  * Create a url matcher that will only match when a given condition is met.
  *
