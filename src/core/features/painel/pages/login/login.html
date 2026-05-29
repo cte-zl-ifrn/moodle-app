@@ -1,0 +1,56 @@
+<ion-content class="ion-padding" id="wrapper">
+    <div *ngIf="!hasInitalized" class="center-div">
+        <ion-spinner></ion-spinner>
+    </div>
+
+    <div *ngIf="hasInitalized" class="login-main">
+        <div class="if-logo">
+            <img src="assets/img/logo-white_7cuzCVB.svg" alt="logo do ifrn">
+            <!-- <ion-select #languageSelect label="{{langLabelOption}}" label-placement="fixed" value="{{langOption}}" interface="popover"
+                class="select-lang" (ionChange)="changeLanguage($event)">
+                <ion-select-option value="pt-br">Portugues</ion-select-option>
+                <ion-select-option value="es">Espanhol</ion-select-option>
+                <ion-select-option value="en">Inglês</ion-select-option>
+            </ion-select> -->
+
+            <div class="select-lang-format">
+                <ion-select value="{{langOption}}" interface="popover" class="select-lang" (ionChange)="changeLanguage($event)">
+                    <ion-select-option value="pt-br">🇧🇷 {{getText('core.painel.portuguese')}}</ion-select-option>
+                    <ion-select-option value="es">🇪🇸 {{getText('core.painel.spanish')}}</ion-select-option>
+                    <ion-select-option value="en">🇺🇸 {{getText('core.painel.english')}}</ion-select-option>
+                </ion-select>
+            </div>
+        </div>
+        <div class="list-item-limited-width login-form">
+            <div class="centered-content">
+                <form #loginForm>
+                    <div class="login-title">
+                        <h1>{{getText('core.painel.login')}}</h1>
+                        <p>{{getText('core.painel.accesswithsuapifrn')}}</p>
+                    </div>
+                    <ion-item class="ion-margin-bottom">
+                        <span class="login-label-span">{{getText('core.painel.registration')}}</span>
+                        <ion-input type="number" name="username" autocapitalize="none" autocorrect="off" autocomplete="username"
+                            enterkeyhint="next" required="true" />
+                    </ion-item>
+                    <ion-item class="ion-margin-bottom">
+                        <span class="login-label-span">{{getText('core.painel.password')}}</span>
+                        <ion-input name="password" type="password" [clearOnEdit]="false" enterkeyhint="go" required="true">
+                            <ion-input-password-toggle slot="end" showIcon="fas-eye" hideIcon="fas-eye-slash"></ion-input-password-toggle>
+                        </ion-input>
+                    </ion-item>
+                    <div class="login-button">
+                        <ion-button expand="block" type="submit" (click)="loginPainel()" class="ion-margin button-login-button">
+                            {{getText('core.painel.access')}}
+                        </ion-button>
+                    </div>
+                </form>
+
+                <div class="login-links">
+                    <ion-button class="change-password" fill="clear"
+                        (click)="changePassword()">{{getText('core.painel.forgotyourpassword')}}</ion-button>
+                </div>
+            </div>
+        </div>
+    </div>
+</ion-content>

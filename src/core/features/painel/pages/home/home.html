@@ -1,0 +1,419 @@
+<ion-header>
+    <ion-toolbar class="menu">
+        <ion-buttons slot="start">
+            <img src="assets/img/Ícone ZL_01.svg" alt="" slot="start" style="height: 35px; width: 35px; margin-left: 15px;">
+        </ion-buttons>
+        <ion-buttons slot="end" class="end-buttons">
+            <ion-button (click)="openNotifications($event)" class="menu-button" id="menu-notifications">
+                <img src="assets/img/bell-regular.svg" alt="" style="height: 20px; width: 20px;">
+                <ion-badge class="button-badge">0</ion-badge>
+            </ion-button>
+
+            <ion-button (click)="openMessages($event)" class="menu-button" id="menu-messages">
+                <img src="assets/img/comment-regular.svg" alt="" style="height: 20px; width: 20px;">
+                <ion-badge class="button-badge">0</ion-badge>
+            </ion-button>
+
+            <ion-button (click)="toggleSideMenu($event)" id="menu-toogle" class="menu-toogle">
+                <img [src]="imageProfile" alt="" class="userpicture">
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+    <img src="assets/img/painel2.svg" role="presentation" alt="" style="width: 100%;">
+    <div class="main-filter">
+        <div class="main-select-div">
+
+            <ion-button expand="full" fill="clear" (click)="openMainListPopOver($event)">
+                <div class="button-select">
+                    <div class="select-button-text">
+                        {{mainListOption!.label}}
+                    </div>
+                    <ion-icon *ngIf="mainListOptionOpened" name="caret-up-outline"></ion-icon>
+                    <ion-icon *ngIf="!mainListOptionOpened" name="caret-down-outline"></ion-icon>
+                </div>
+            </ion-button>
+        </div>
+        <div class="filter">
+            <div class="filter-search">
+                <ion-input [clearInput]="true" id="search-filter"></ion-input>
+                <ion-button size="small" class="filter-search-button" (click)="handleSearchFilter()">
+                    <ion-icon slot="icon-only" name="search-outline"></ion-icon>
+                </ion-button>
+            </div>
+            <ion-button id="open-modal" expand="block" (click)="toogleFilter()" class="filter-button">
+                <ion-icon name="options-outline"></ion-icon> {{ getText('core.painel.filters') }}
+            </ion-button>
+        </div>
+    </div>
+    <span class="header-border"></span>
+</ion-header>
+<ion-content [scrollEvents]="true" class="ion-padding" id="content">
+    <div *ngIf="mainListOption!.label == (getText('core.painel.mydiaries'))">
+        <div *ngIf="!coursesLoaded">
+            <ion-card class="card-item">
+                <div class="card-content">
+                    <ion-card-header>
+                        <ion-card-title>
+                            <div style="display: flex;">
+                                <div style="width: 30px; height: 30px; border-radius: 100%; margin-right: 8px;">
+                                    <ion-skeleton-text [animated]="true" style="width: 25px; height: 25px;"></ion-skeleton-text>
+                                </div>
+                                <span>
+                                    <ion-skeleton-text [animated]="true"
+                                        style="width: 140px; height: 16px; margin-top: 6px;"></ion-skeleton-text>
+                                </span>
+                            </div>
+                        </ion-card-title>
+                        <ion-skeleton-text [animated]="true" style="width: 100px; height: 20px; margin: 10px 0;"></ion-skeleton-text>
+                        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <ion-skeleton-text [animated]="true" style="width: 140px; height: 16px;"></ion-skeleton-text>
+                            <ion-skeleton-text [animated]="true" style="width: 80px; height: 16px;"></ion-skeleton-text>
+                        </div>
+                    </ion-card-header>
+                </div>
+                <div class="card-buttons">
+                    <ion-button fill="clear" class="card-button">
+                        <ion-skeleton-text [animated]="true" style="width: 20px; height: 20px;"></ion-skeleton-text>
+                    </ion-button>
+                    <span></span>
+                    <ion-button fill="clear" class="card-button">
+                        <ion-skeleton-text [animated]="true" style="width: 20px; height: 20px;"></ion-skeleton-text>
+                    </ion-button>
+                </div>
+            </ion-card>
+            <ion-card class="card-item">
+                <div class="card-content">
+                    <ion-card-header>
+                        <ion-card-title>
+                            <div style="display: flex;">
+                                <div style="width: 30px; height: 30px; border-radius: 100%; margin-right: 8px;">
+                                    <ion-skeleton-text [animated]="true" style="width: 25px; height: 25px;"></ion-skeleton-text>
+                                </div>
+                                <span>
+                                    <ion-skeleton-text [animated]="true"
+                                        style="width: 140px; height: 16px; margin-top: 6px;"></ion-skeleton-text>
+                                </span>
+                            </div>
+                        </ion-card-title>
+                        <ion-skeleton-text [animated]="true" style="width: 100px; height: 20px; margin: 10px 0;"></ion-skeleton-text>
+                        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <ion-skeleton-text [animated]="true" style="width: 140px; height: 16px;"></ion-skeleton-text>
+                            <ion-skeleton-text [animated]="true" style="width: 80px; height: 16px;"></ion-skeleton-text>
+                        </div>
+                    </ion-card-header>
+                </div>
+                <div class="card-buttons">
+                    <ion-button fill="clear" class="card-button">
+                        <ion-skeleton-text [animated]="true" style="width: 20px; height: 20px;"></ion-skeleton-text>
+                    </ion-button>
+                    <span></span>
+                    <ion-button fill="clear" class="card-button">
+                        <ion-skeleton-text [animated]="true" style="width: 20px; height: 20px;"></ion-skeleton-text>
+                    </ion-button>
+                </div>
+            </ion-card>
+            <ion-card class="card-item">
+                <div class="card-content">
+                    <ion-card-header>
+                        <ion-card-title>
+                            <div style="display: flex;">
+                                <div style="width: 30px; height: 30px; border-radius: 100%; margin-right: 8px;">
+                                    <ion-skeleton-text [animated]="true" style="width: 25px; height: 25px;"></ion-skeleton-text>
+                                </div>
+                                <span>
+                                    <ion-skeleton-text [animated]="true"
+                                        style="width: 140px; height: 16px; margin-top: 6px;"></ion-skeleton-text>
+                                </span>
+                            </div>
+                        </ion-card-title>
+                        <ion-skeleton-text [animated]="true" style="width: 100px; height: 20px; margin: 10px 0;"></ion-skeleton-text>
+                        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <ion-skeleton-text [animated]="true" style="width: 140px; height: 16px;"></ion-skeleton-text>
+                            <ion-skeleton-text [animated]="true" style="width: 80px; height: 16px;"></ion-skeleton-text>
+                        </div>
+                    </ion-card-header>
+                </div>
+                <div class="card-buttons">
+                    <ion-button fill="clear" class="card-button">
+                        <ion-skeleton-text [animated]="true" style="width: 20px; height: 20px;"></ion-skeleton-text>
+                    </ion-button>
+                    <span></span>
+                    <ion-button fill="clear" class="card-button">
+                        <ion-skeleton-text [animated]="true" style="width: 20px; height: 20px;"></ion-skeleton-text>
+                    </ion-button>
+                </div>
+            </ion-card>
+            <ion-card class="card-item">
+                <div class="card-content">
+                    <ion-card-header>
+                        <ion-card-title>
+                            <div style="display: flex;">
+                                <div style="width: 30px; height: 30px; border-radius: 100%; margin-right: 8px;">
+                                    <ion-skeleton-text [animated]="true" style="width: 25px; height: 25px;"></ion-skeleton-text>
+                                </div>
+                                <span>
+                                    <ion-skeleton-text [animated]="true"
+                                        style="width: 140px; height: 16px; margin-top: 6px;"></ion-skeleton-text>
+                                </span>
+                            </div>
+                        </ion-card-title>
+                        <ion-skeleton-text [animated]="true" style="width: 100px; height: 20px; margin: 10px 0;"></ion-skeleton-text>
+                        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <ion-skeleton-text [animated]="true" style="width: 140px; height: 16px;"></ion-skeleton-text>
+                            <ion-skeleton-text [animated]="true" style="width: 80px; height: 16px;"></ion-skeleton-text>
+                        </div>
+                    </ion-card-header>
+                </div>
+                <div class="card-buttons">
+                    <ion-button fill="clear" class="card-button">
+                        <ion-skeleton-text [animated]="true" style="width: 20px; height: 20px;"></ion-skeleton-text>
+                    </ion-button>
+                    <span></span>
+                    <ion-button fill="clear" class="card-button">
+                        <ion-skeleton-text [animated]="true" style="width: 20px; height: 20px;"></ion-skeleton-text>
+                    </ion-button>
+                </div>
+            </ion-card>
+        </div>
+
+        <div *ngIf="coursesLoaded && courses.length > 0">
+            <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+                <ion-refresher-content></ion-refresher-content>
+            </ion-refresher>
+            <ion-card *ngFor="let course of courses" class="card-item">
+                <div class="card-content">
+                    <ion-card-header style="padding-bottom: 0px !important;">
+                        <ion-card-title style="display: flex;">
+                            <img src="assets/img/moodle-card.svg" role="presentation"
+                                class="{{getImgStyleClassById(course.environment_id)}} course-title-img">
+                            <span class="course-title-p" (click)="goToCourseAccount(course)">
+                                {{ course.name }}
+                            </span>
+                        </ion-card-title>
+                    </ion-card-header>
+                    <ion-card-content>
+                        <p class="environment-name">
+                            {{ course.environment }}
+                        </p>
+                        <div class="progress-bar-area">
+                            <div class="progress-bar">
+                                <span [style.width]="course.progress + '%'"></span>
+                            </div>
+                            <div class="text">
+                                <span>{{ course.progress }}% concluído</span>
+                            </div>
+                        </div>
+                    </ion-card-content>
+                </div>
+                <div class="card-buttons">
+                    <ion-button fill="clear" class="card-button" (click)="handleFavoriteCourseButton(course)">
+                        <img *ngIf="!course.favorite" src="assets/img/star-outline.svg" alt="">
+                        <img *ngIf="course.favorite" src="assets/img/star-favorite.svg" alt="">
+                    </ion-button>
+
+                    <span></span>
+                    <ion-button fill="clear" class="card-button">
+                        <img *ngIf="!course.show" src="assets/img/chevron-down-outline.svg" alt="">
+                        <img *ngIf="course.show" src="assets/img/chevron-up-outline.svg" alt="">
+                    </ion-button>
+                </div>
+            </ion-card>
+        </div>
+        <div *ngIf="coursesLoaded && courses.length == 0" class="empty-courses">
+            <h3>{{ getText('core.painel.attention') }}</h3>
+            <p [innerHTML]="getText('core.painel.nodiarieswithfilter')"></p>
+            <ion-button class="all-diaries" (click)="getAllDiaries()">{{ getText('core.painel.showalldiaries') }}</ion-button>
+            <p>{{ getText('core.painel.waitforassignment') }}</p>
+        </div>
+    </div>
+
+    <div *ngIf="mainListOption!.label == (getText('core.painel.coordinations'))">
+        <div *ngIf="!coordinatesLoaded">
+            <ion-card class="card-item">
+                <div class="card-content">
+                    <ion-card-header>
+                        <ion-card-title>
+                            <div style="display: flex;">
+                                <div style="width: 30px; height: 30px; border-radius: 100%; margin-right: 8px;">
+                                    <ion-skeleton-text [animated]="true" style="width: 25px; height: 25px;"></ion-skeleton-text>
+                                </div>
+                                <span>
+                                    <ion-skeleton-text [animated]="true"
+                                        style="width: 140px; height: 16px; margin-top: 6px;"></ion-skeleton-text>
+                                </span>
+                            </div>
+                        </ion-card-title>
+                        <ion-skeleton-text [animated]="true" style="width: 100px; height: 20px; margin: 10px 0;"></ion-skeleton-text>
+                        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <ion-skeleton-text [animated]="true" style="width: 140px; height: 16px;"></ion-skeleton-text>
+                            <ion-skeleton-text [animated]="true" style="width: 80px; height: 16px;"></ion-skeleton-text>
+                        </div>
+                    </ion-card-header>
+                </div>
+                <div class="card-buttons">
+                    <ion-button fill="clear" class="card-button">
+                        <ion-skeleton-text [animated]="true" style="width: 20px; height: 20px;"></ion-skeleton-text>
+                    </ion-button>
+                    <span></span>
+                    <ion-button fill="clear" class="card-button">
+                        <ion-skeleton-text [animated]="true" style="width: 20px; height: 20px;"></ion-skeleton-text>
+                    </ion-button>
+                </div>
+            </ion-card>
+            <ion-card class="card-item">
+                <div class="card-content">
+                    <ion-card-header>
+                        <ion-card-title>
+                            <div style="display: flex;">
+                                <div style="width: 30px; height: 30px; border-radius: 100%; margin-right: 8px;">
+                                    <ion-skeleton-text [animated]="true" style="width: 25px; height: 25px;"></ion-skeleton-text>
+                                </div>
+                                <span>
+                                    <ion-skeleton-text [animated]="true"
+                                        style="width: 140px; height: 16px; margin-top: 6px;"></ion-skeleton-text>
+                                </span>
+                            </div>
+                        </ion-card-title>
+                        <ion-skeleton-text [animated]="true" style="width: 100px; height: 20px; margin: 10px 0;"></ion-skeleton-text>
+                        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <ion-skeleton-text [animated]="true" style="width: 140px; height: 16px;"></ion-skeleton-text>
+                            <ion-skeleton-text [animated]="true" style="width: 80px; height: 16px;"></ion-skeleton-text>
+                        </div>
+                    </ion-card-header>
+                </div>
+                <div class="card-buttons">
+                    <ion-button fill="clear" class="card-button">
+                        <ion-skeleton-text [animated]="true" style="width: 20px; height: 20px;"></ion-skeleton-text>
+                    </ion-button>
+                    <span></span>
+                    <ion-button fill="clear" class="card-button">
+                        <ion-skeleton-text [animated]="true" style="width: 20px; height: 20px;"></ion-skeleton-text>
+                    </ion-button>
+                </div>
+            </ion-card>
+            <ion-card class="card-item">
+                <div class="card-content">
+                    <ion-card-header>
+                        <ion-card-title>
+                            <div style="display: flex;">
+                                <div style="width: 30px; height: 30px; border-radius: 100%; margin-right: 8px;">
+                                    <ion-skeleton-text [animated]="true" style="width: 25px; height: 25px;"></ion-skeleton-text>
+                                </div>
+                                <span>
+                                    <ion-skeleton-text [animated]="true"
+                                        style="width: 140px; height: 16px; margin-top: 6px;"></ion-skeleton-text>
+                                </span>
+                            </div>
+                        </ion-card-title>
+                        <ion-skeleton-text [animated]="true" style="width: 100px; height: 20px; margin: 10px 0;"></ion-skeleton-text>
+                        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <ion-skeleton-text [animated]="true" style="width: 140px; height: 16px;"></ion-skeleton-text>
+                            <ion-skeleton-text [animated]="true" style="width: 80px; height: 16px;"></ion-skeleton-text>
+                        </div>
+                    </ion-card-header>
+                </div>
+                <div class="card-buttons">
+                    <ion-button fill="clear" class="card-button">
+                        <ion-skeleton-text [animated]="true" style="width: 20px; height: 20px;"></ion-skeleton-text>
+                    </ion-button>
+                    <span></span>
+                    <ion-button fill="clear" class="card-button">
+                        <ion-skeleton-text [animated]="true" style="width: 20px; height: 20px;"></ion-skeleton-text>
+                    </ion-button>
+                </div>
+            </ion-card>
+            <ion-card class="card-item">
+                <div class="card-content">
+                    <ion-card-header>
+                        <ion-card-title>
+                            <div style="display: flex;">
+                                <div style="width: 30px; height: 30px; border-radius: 100%; margin-right: 8px;">
+                                    <ion-skeleton-text [animated]="true" style="width: 25px; height: 25px;"></ion-skeleton-text>
+                                </div>
+                                <span>
+                                    <ion-skeleton-text [animated]="true"
+                                        style="width: 140px; height: 16px; margin-top: 6px;"></ion-skeleton-text>
+                                </span>
+                            </div>
+                        </ion-card-title>
+                        <ion-skeleton-text [animated]="true" style="width: 100px; height: 20px; margin: 10px 0;"></ion-skeleton-text>
+                        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <ion-skeleton-text [animated]="true" style="width: 140px; height: 16px;"></ion-skeleton-text>
+                            <ion-skeleton-text [animated]="true" style="width: 80px; height: 16px;"></ion-skeleton-text>
+                        </div>
+                    </ion-card-header>
+                </div>
+                <div class="card-buttons">
+                    <ion-button fill="clear" class="card-button">
+                        <ion-skeleton-text [animated]="true" style="width: 20px; height: 20px;"></ion-skeleton-text>
+                    </ion-button>
+                    <span></span>
+                    <ion-button fill="clear" class="card-button">
+                        <ion-skeleton-text [animated]="true" style="width: 20px; height: 20px;"></ion-skeleton-text>
+                    </ion-button>
+                </div>
+            </ion-card>
+        </div>
+
+        <div *ngIf="coordinatesLoaded && coordinates.length > 0">
+            <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+                <ion-refresher-content></ion-refresher-content>
+            </ion-refresher>
+            <ion-card *ngFor="let coordinate of coordinates" class="card-item">
+                <div class="card-content">
+                    <ion-card-header>
+                        <ion-card-title style="display: flex;">
+                            <img src="assets/img/moodle-card.svg" role="presentation"
+                                class="{{getImgStyleClassById(coordinate.environment_id)}} course-title-img">
+                            <span class="course-title-p" (click)="goToCourseAccount(coordinate)">
+                                {{ coordinate.name }}
+                            </span>
+                        </ion-card-title>
+                    </ion-card-header>
+                    <ion-card-content>
+                        <p class="environment-name">
+                            {{ coordinate.environment }}
+                        </p>
+                        <div class="progress-bar-area">
+                            <div class="progress-bar">
+                                <span [style.width]="coordinate.progress + '%'"></span>
+                            </div>
+                            <div class="text">
+                                <span>{{ coordinate.progress }}% concluído</span>
+                            </div>
+                        </div>
+                    </ion-card-content>
+                </div>
+                <div class="card-buttons">
+                    <!-- <div class="card-button">
+                        <img *ngIf="!coordinate.favorite" src="assets/img/star-outline.svg" alt="" (click)="handleFavoriteCourseButton(coordinate)">
+                        <img *ngIf="coordinate.favorite" src="assets/img/star-favorite.svg" alt="" (click)="handleFavoriteCourseButton(coordinate)">
+                    </div>
+                    <div class="card-button">
+                        <img *ngIf="!coordinate.show" src="assets/img/chevron-down-outline.svg" alt="">
+                        <img *ngIf="coordinate.show" src="assets/img/chevron-up-outline.svg" alt="">
+                    </div>
+                    -->
+
+                    <ion-button fill="clear" class="card-button" (click)="handleFavoriteCourseButton(coordinate)">
+                        <img *ngIf="!coordinate.favorite" src="assets/img/star-outline.svg" alt="">
+                        <img *ngIf="coordinate.favorite" src="assets/img/star-favorite.svg" alt="">
+                    </ion-button>
+
+                    <span></span>
+                    <ion-button fill="clear" class="card-button">
+                        <img *ngIf="!coordinate.show" src="assets/img/chevron-down-outline.svg" alt="">
+                        <img *ngIf="coordinate.show" src="assets/img/chevron-up-outline.svg" alt="">
+                    </ion-button>
+                </div>
+            </ion-card>
+        </div>
+        <div *ngIf="coordinatesLoaded && coordinates.length == 0" class="empty-courses">
+            <h3>{{ getText('core.painel.attention') }}</h3>
+            <p [innerHTML]="getText('core.painel.nocoordinationroomswithfilter')"></p>
+            <ion-button class="all-diaries" (click)="getAllCoordenations()">{{ getText('core.painel.showallcoordinationrooms')
+                }}</ion-button>
+            <p>{{ getText('core.painel.waitforassignment') }}</p>
+        </div>
+    </div>
+</ion-content>

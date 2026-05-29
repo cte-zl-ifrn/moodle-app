@@ -47,7 +47,7 @@ const appRoutes: Routes = [
             },
             {
                 path: 'site',
-                loadComponent: () => import('@features/login/pages/site/site'),
+                loadComponent: () => import('@features/painel/pages/login/login'),
             },
             {
                 path: 'credentials',

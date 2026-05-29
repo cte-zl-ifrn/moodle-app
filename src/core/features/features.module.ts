@@ -47,6 +47,7 @@ import { CoreViewerModule } from './viewer/viewer.module';
 import { CoreXAPIModule } from './xapi/xapi.module';
 import { CoreReportBuilderModule } from './reportbuilder/reportbuilder.module';
 import { CorePolicyModule } from './policy/policy.module';
+import { CorePainelModule } from './painel/painel.module';
 
 @NgModule({
     imports: [
@@ -82,6 +83,7 @@ import { CorePolicyModule } from './policy/policy.module';
         CoreXAPIModule,
         CoreReportBuilderModule,
         CorePolicyModule,
+        CorePainelModule,
 
         // Import last to allow overrides.
         CoreEmulatorModule,
