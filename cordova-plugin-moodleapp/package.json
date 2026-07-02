@@ -12,7 +12,7 @@
   },
   "devDependencies": {
     "chokidar-cli": "^3.0.0",
-    "concurrently": "^9.2.1",
+    "concurrently": "^9.2.3",
     "esbuild": "^0.25.12",
     "typescript": "~5.9.2"
   }
